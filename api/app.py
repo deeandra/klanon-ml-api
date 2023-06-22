@@ -1,7 +1,6 @@
-from flask import Flask, jsonify, render_template, request, make_response
+from flask import Flask, jsonify, request
 import transformers
 from transformers import pipeline
-from flask_cors import CORS
 
 app = Flask(__name__)
 # CORS(app)
@@ -34,6 +33,9 @@ def classify(message):
 
     return prediction
 
+@app.route("/")
+def hello_world():
+    return "Hello World!"
 
 @app.route('/predict', methods=['POST'])
 def predict():
