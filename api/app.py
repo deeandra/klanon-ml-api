@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 import transformers
 from transformers import pipeline
+import time
 
 app = Flask(__name__)
 # CORS(app)
@@ -33,19 +34,21 @@ def classify(message):
 
     return prediction
 
-@app.route("/")
-def hello_world():
-    return "Hello World!"
+
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    start_time = time.time()
     message = request.form['message']
     prediction = classify(message)
     response = jsonify(prediction)
-
+    
+    end_time = time.time()
+    execution_time = end_time - start_time
+    app.logger.info('prediction time: ', execution_time)
     return response
     
 
-# if __name__ == '__main__':
-#     # starting app
-#     app.run(host='0.0.0.0')
+if __name__ == '__main__':
+    # starting app
+    app.run(host='0.0.0.0')
